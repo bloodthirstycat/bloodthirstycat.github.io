@@ -3,8 +3,50 @@
     <meta charset="UTF-8">
     <title>Quagga Test</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/quagga/0.12.1/quagga.min.js" integrity="sha512-bCsBoYoW6zE0aja5xcIyoCDPfT27+cGr7AOCqelttLVRGay6EKGQbR6wm6SUcUGOMGXJpj+jrIpMS6i80+kZPw==" crossorigin="anonymous"></script>
+	<script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
   </head>
   <body>
-  
+		<input type="text" id="eancode"><button type="button" id="scanstart">Skanuj</button>
+		<br /><br />
+		<div id="areas"></div>
+		<script>
+			var video = null;
+			var v_stream = null;
+			$("#scanstart").click(function(){
+				video = document.createElement("video");
+				video.id = "skaner";
+				navigator.mediaDevices.getUserMedia({ video: true }).then(function(stream) {
+					video.srcObject = stream;
+					video.play();
+				});	
+				$("#areas").append(video);
+				Quagga.init({
+					inputStream : {
+					  name : "Live",
+					  type : "LiveStream",
+					  target: video
+					},
+					decoder : {
+					  readers : ["code_128_reader"]
+					}
+				  }, function(err) {
+					  if (err) {
+						  console.log(err);
+						  return
+					  }
+					  console.log("Initialization finished. Ready to start");
+					  Quagga.start();
+				  });
+				  Quagga.onDetected(function(result){
+						var code = result.codeResult.code;
+						Quagga.stop();
+						video.srcObject.getTracks()[0].stop();
+						$("video").remove()
+						video.srcObject = null
+						video = null;
+						console.log(result);
+				  })
+			})
+		</script>
   </body>
 </html>
