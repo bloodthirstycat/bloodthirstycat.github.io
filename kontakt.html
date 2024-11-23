@@ -7,6 +7,11 @@
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <script>
+	  $(document).ready(function(){
+	  	$("#currentYear").html((new Date()).getFullYear())
+	  });
+  </script>
   <style>
     body {
 	background-color: #353638;
@@ -107,7 +112,7 @@
 </div>
 
 <footer class="container-fluid text-center">
-  <p>Bloodthirsty Cat &copy 2019<br>
+  <p>Bloodthirsty Cat &copy 2019 - <span id="currentYear"></span><br>
 Pomysł i pomoc w implementacji:: BadOmen<br>
 Programista: Robercik101 & BadOmen</br></p>
 </footer>
